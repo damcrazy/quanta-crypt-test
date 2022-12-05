@@ -1,0 +1,114 @@
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+  background: var(--greyLight-1) !important;
+}
+
+.contain {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: var(--greyLight-1) !important;
+  padding: 0 !important;
+}
+
+.button-container {
+  padding: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.btn {
+  width: 10rem;
+  height: 3rem;
+  border-radius: 1rem;
+  box-shadow: 0.3rem 0.3rem 0.6rem var(--greyLight-2), -0.2rem -0.2rem 0.5rem var(--white);
+  justify-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+.btn__primary {
+  border: 0 !important;
+  background: var(--primary) !important;
+  box-shadow: 0.3rem 0.3rem 0.6rem var(--greyLight-2), -0.2rem -0.2rem 0.5rem var(--white) !important;
+  color: var(--greyLight-1) !important;
+}
+.btn__primary:hover {
+  color: var(--white) !important;
+}
+.btn__primary:active {
+  box-shadow: inset 0.2rem 0.2rem 1rem var(--primary-dark), inset -0.2rem -0.2rem 1rem var(--primary-light);
+}
+.btn__secondary {
+  grid-column: 1/2;
+  grid-row: 5/6;
+  background: var(--greyLight-1) !important;
+  border: 0 !important;
+  color: var(--greyDark) !important;
+}
+.btn__secondary:hover {
+  color: var(--primary) !important;
+}
+.btn__secondary:active {
+  box-shadow: inset 0.2rem 0.2rem 0.5rem var(--greyLight-2), inset -0.2rem -0.2rem 0.5rem var(--white) !important;
+}
+.btn__secondary:focus {
+  box-shadow: none !important;
+}
+.btn p {
+  font-size: 1.6rem;
+}
+
+.form {
+  grid-column: 3/4;
+  grid-row: 3/4;
+  border: 0 !important;
+}
+.form__input {
+  width: 20.4rem !important;
+  height: 4rem !important;
+  border: none !important;
+  border-radius: 1rem !important;
+  font-size: 1.4rem !important;
+  padding-left: 1.4rem !important;
+  box-shadow: inset 0.2rem 0.2rem 0.5rem var(--greyLight-2), inset -0.2rem -0.2rem 0.5rem var(--white) !important;
+  background: none !important;
+  font-family: inherit !important;
+  color: var(--greyDark) !important;
+}
+.form__input::-moz-placeholder {
+  color: var(--greyLight-3) !important;
+}
+.form__input:-ms-input-placeholder {
+  color: var(--greyLight-3) !important;
+}
+.form__input::placeholder {
+  color: var(--greyLight-3) !important;
+}
+.form__input:focus {
+  outline: none !important;
+  box-shadow: 0.3rem 0.3rem 0.6rem var(--greyLight-2), -0.2rem -0.2rem 0.5rem var(--white) !important;
+}
+
+.form_label {
+  color: var(--greyDark);
+}
+
+.form_group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}/*# sourceMappingURL=login.css.map */

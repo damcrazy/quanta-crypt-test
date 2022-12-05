@@ -1,0 +1,111 @@
+
+  $shadow: .3rem .3rem .6rem var(--greyLight-2), 
+  -.2rem -.2rem .5rem var(--white);
+  $inner-shadow: inset .2rem .2rem .5rem var(--greyLight-2), 
+  inset -.2rem -.2rem .5rem var(--white);
+  
+  *, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+  }
+  
+html {
+    box-sizing: border-box;
+    background: var(--greyLight-1) !important;
+}
+
+.contain{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: var(--greyLight-1) !important;
+    padding: 0 !important;
+    // margin: 0 !important;
+}
+
+.button-container{
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+.btn {
+    width: 10rem;
+    height: 3rem;
+    border-radius: 1rem;
+    box-shadow: $shadow;
+    justify-self: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: .3s ease;
+  
+    &__primary {
+      border: 0 !important;
+      background: var(--primary) !important;
+      box-shadow:
+                $shadow !important;
+      color: var(--greyLight-1) !important;
+  
+      &:hover { color: var(--white) !important; }
+      &:active {
+        box-shadow:inset .2rem .2rem 1rem var(--primary-dark), 
+               inset -.2rem -.2rem 1rem var(--primary-light);
+      }
+    }
+  
+    &__secondary {
+      grid-column: 1 / 2;
+      grid-row: 5 / 6;
+      background: var(--greyLight-1) !important;
+      border: 0 !important;
+      color: var(--greyDark) !important;
+      &:hover { color: var(--primary) !important; }
+      &:active {
+        box-shadow: $inner-shadow !important;
+      }
+      &:focus {
+        box-shadow: none !important;
+      }
+    }
+  
+    p { 
+      font-size: 1.6rem;
+    }
+  }
+
+  .form {
+    grid-column: 3 / 4;
+    grid-row: 3 / 4;
+    border: 0 !important;
+    &__input {
+      width: 20.4rem !important;
+      height: 4rem !important;
+      border: none!important;
+      border-radius: 1rem !important;
+      font-size: 1.4rem!important;
+      padding-left: 1.4rem!important;
+      box-shadow: $inner-shadow!important;
+      background: none!important;
+      font-family: inherit!important;
+      color: var(--greyDark)!important;
+  
+      &::placeholder { color: var(--greyLight-3)!important; }
+      &:focus { outline: none !important; box-shadow: $shadow !important; }
+    }
+    
+  }
+  .form_label{
+    color: var(--greyDark);
+}
+.form_group{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}

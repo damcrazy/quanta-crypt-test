@@ -1,0 +1,71 @@
+
+  $shadow: .3rem .3rem .6rem var(--greyLight-2), 
+  -.2rem -.2rem .5rem var(--white);
+  $inner-shadow: inset .2rem .2rem .5rem var(--greyLight-2), 
+  inset -.2rem -.2rem .5rem var(--white);
+  
+.group{
+    display: flex;
+    flex-grow: 1;
+    overflow-x: hidden;
+    background-color: var(--greyLight-1);
+}
+.conversation-item {
+    background-color: var(--greyLight-1) !important;
+    border: 0 !important;
+    justify-self: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    color: var(--greyDark) !important;
+
+  
+    &__icon {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.8rem;
+      color: var(--primary);
+    }
+  
+    p {
+      font-size: .9rem;
+      color: var(--greyDark);
+    }
+  
+    &__close {
+      width: 1.6rem;
+      height: 1.6rem;
+      margin: 0 .5rem;
+      display: flex;
+      font-size: 1.6rem;
+      color: var(--greyLight-3);
+      cursor: pointer;
+
+      &:hover {
+        color: var(--primary);
+      }
+    }
+  }
+
+  .active{
+    
+    color: var(--primary) !important;
+  }
+
+  .conversation-item{
+    display: flex !important;
+    justify-content: space-between;
+  }
+
+  .close{
+    background-color: var(--greyLight-1);
+    border: 0;
+    margin: 0;
+    
+}
