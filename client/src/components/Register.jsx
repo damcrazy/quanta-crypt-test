@@ -3,7 +3,7 @@ import axios from "axios";
 import { useRef, useState,useEffect } from "react";
 // import "./register.css";
 
-export default function Register({ setShowLogin,setCurrentUsername,myStorage,id }) {
+export default function Register({ setShowLogin,setCurrentUsername,myStorage,id,auth }) {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState({ error: false, message: "" });
   const usernameRef = useRef();
@@ -21,7 +21,7 @@ export default function Register({ setShowLogin,setCurrentUsername,myStorage,id 
     };
 
 
-      axios.post("http://localhost:8800/api/users/register", newUser).then((res) => {
+      axios.post(auth+"/register", newUser).then((res) => {
       setCurrentUsername(res.data.username);
       myStorage.setItem('user', res.data.loggedUser);
       id(res.data.loggedUser);
@@ -38,19 +38,21 @@ export default function Register({ setShowLogin,setCurrentUsername,myStorage,id 
   return (
     <div className="registerContainer">
       <form onSubmit={handleSubmit}>
-        <input autoFocus placeholder="username" min="2" ref={usernameRef} />
-        <input type="email" placeholder="email" ref={emailRef} />
+        <input autoFocus placeholder="username" min="2" ref={usernameRef} required/>
+        <input type="email" placeholder="email" ref={emailRef} required />
         <input
           type="password"
           min="6"
           placeholder="password"
           ref={passwordRef}
+          required
         />
         <input
           type="password"
           min="6"
           placeholder="Confirm Password"
           ref={confirmPasswordRef}
+          required
         />
         <button className="registerBtn" type="submit">
           Register

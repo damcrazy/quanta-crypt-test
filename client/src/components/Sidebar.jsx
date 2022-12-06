@@ -15,7 +15,7 @@ import './Styles/Sidebar/sidebar.css'
 const conv_key = "conversations";
 const contact_key = "contact";
 
-export default function Sidebar({id,setId}) {
+export default function Sidebar({id,setId,setShowLogin}) {
     const [activeKey, setActiveKey] = React.useState(conv_key);
     const [modalOpen, setModalOpen] = React.useState(false);
 
@@ -57,7 +57,10 @@ export default function Sidebar({id,setId}) {
         <Button className="w-100 rounded-0 btn__primary " onClick={() => {setModalOpen(true)}}>
             New {activeKey === conv_key ? "conversation" : "contact"}
         </Button>
-        <button onClick={() => {setId("0")}} className="btn btn-light btn__secondary fixed-bottom"> logout </button>
+        <button onClick={() => {
+            localStorage.clear();
+            setShowLogin(false)
+    }} className="btn btn-light btn__secondary fixed-bottom"> logout </button>
         <Modal show={modalOpen} onHide={closeModal}>
             {activeKey === conv_key ? <ConversationsModal closeModal={closeModal}/> : <ContactModal closeModal={closeModal}/>}
         </Modal>

@@ -17,9 +17,32 @@ export function SocketProvider({id,children}) {
         setSocket(newSocket)
         return () => { newSocket.close() }
     },[]);
+
+
+
     return (
-    <SocketContext.Provider value={socket}>
+    <SocketContext.Provider value={[socket,keySocket]} >
         {children}
     </SocketContext.Provider>
   )
 }
+export function KeySocket({id,children}) {
+  // console.log('id',id)
+  const [keySocket,setKeySocket] = useState();
+  useEffect(() => {
+    const keySocket = io('http://localhost:4444/',
+    {query:{id}})
+      setKeySocket(keySocket)
+      return () => { keySocket.close() }
+  },[]);
+
+
+
+    return (
+    <SocketContext.Provider value={[socket,keySocket]} >
+        {children}
+    </SocketContext.Provider>
+  )
+}
+
+

@@ -5,7 +5,7 @@ import { useRef, useState, useEffect } from "react";
 import Register from "./Register";
 
 
-export default function Login({ setShowLogin, setCurrentUsername,myStorage,id }) {
+export default function Login({ setShowLogin, setCurrentUsername,myStorage,id,auth }) {
   const [error, setError] = useState({ error: false, message: "" });
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -17,7 +17,7 @@ export default function Login({ setShowLogin, setCurrentUsername,myStorage,id })
       email: emailRef.current.value,
       password: passwordRef.current.value,
     };
-    axios.post("http://localhost:8800/api/users/login", user).then((res) => {
+    axios.post(auth + "/login", user).then((res) => {
       console.log(res);  
     setCurrentUsername(res.data.username);
       myStorage.setItem('user', res.data.loggedUser);
@@ -60,6 +60,7 @@ haveAccount ? login : <Register setShowLogin={setShowLogin}
 setCurrentUsername={setCurrentUsername}
 myStorage={myStorage}
 id={id}
+auth={auth}
 />
 
 

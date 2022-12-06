@@ -20,6 +20,15 @@ const UserSchema = new mongoose.Schema(
       required: true,
       min: 6,
     },
+    payment: {
+      type: Number,
+      required: true,
+    },
+    uid: {
+      type: String,
+      required: true,
+      unique: true,
+    },
   },
   { timestamps: true }
 );

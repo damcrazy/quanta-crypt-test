@@ -12,25 +12,40 @@ const io = new Server(server, {
 
 let key = "";
 
-function startTimer() {
-	timer = setInterval(function () {
-		axios.get("http://localhost:4444/encrypt").then((res) => {
-			key = res.data;
-			console.log(key);
-		}).catch((err) => {
-			console.log(err);
-		});
-	}, 300000);
+users = {
+	"1":{
+		senderKey: "123",
+		receiverKey: "456",
+		receiverId: "2"
+	}	
 }
 
-startTimer();
+
+// function startTimer() {
+// 	timer = setInterval(function () {
+// 		axios.get("http://localhost:4444/encrypt").then((res) => {
+// 			key = res.data;
+// 			console.log(key);
+// 		}).catch((err) => {
+// 			console.log(err);
+// 		});
+// 	}, 300000);
+// }
+// startTimer();
+
+
 io.on("connection", (socket) => {
 	const id = socket.handshake.query.id;
 	socket.join(id);
 	console.log(`${id} connected`);
 
+
+	socket.on("share-key", (data) => {
+		socket.to(id).emit("share-key", key);
+	});
+
 	socket.on("send-message", (data) => {
-		// console.log(data);
+		console.log(data);
 		let text = data.text;
 		data.recipients.forEach((recipient) => {
 			const newRecipients = data.recipients.filter((r) => r !== recipient);
@@ -38,7 +53,7 @@ io.on("connection", (socket) => {
 			socket.broadcast.to(recipient).emit("recive-message", {
 				recipients: newRecipients,
 				sender: id,
-				text: key,
+				text: text,
 			});
 		});
 	});

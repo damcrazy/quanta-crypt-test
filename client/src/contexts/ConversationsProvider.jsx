@@ -1,7 +1,11 @@
 import React, { useContext, useState,useEffect,useCallback } from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
 import { useContacts } from "./ContactsProvider";
-import { useSocket } from "./SocketProvider";
+import  {useSocket}  from "./SocketProvider";
+import CryptoJS from "crypto-js";
+import axios from "axios";
+
+
 const ConversationsContext = React.createContext();
 
 export function useConversations() {
@@ -95,9 +99,6 @@ export function ConversationsProvider({ id, children }) {
     // },[setConversations]);
 
     const addMessageToConversation = useCallback(({ recipients, text, sender }) => {
-      console.log(recipients)
-      console.log(sender)
-      console.log(text)
         setConversations(prevConversations => {
           let madeChange = false
           const newMessage = { sender, text }
@@ -143,7 +144,12 @@ export function ConversationsProvider({ id, children }) {
         if(socket == null){
             return;
         }
-        socket.on("recive-message", addMessageToConversation);
+        socket[0].on("recive-message",({recipients,text,sender})=>{
+          var bytes  = CryptoJS.AES.decrypt(text, key);
+          var originalText = bytes.toString(CryptoJS.enc.Utf8);
+        addMessageToConversation({recipients,text:originalText,sender})
+      }
+        );
         
         return () => { socket.off("recive-message"); }
     },[socket,addMessageToConversation]);
@@ -152,8 +158,11 @@ export function ConversationsProvider({ id, children }) {
 
 
     function sendMessage(recipients, text) {
-      // console.log(id)
-        socket.emit('send-message', { recipients, text });
+      //encrypt message here
+      var ciphertext = CryptoJS.AES.encrypt(text, key).toString()
+      // console.log(ciphertext)
+
+        socket[0].emit('send-message', { recipients, text:ciphertext });
         addMessageToConversation({recipients, text, sender:id});
     }
 
