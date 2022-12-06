@@ -3,7 +3,7 @@ import {Form,InputGroup, Button} from 'react-bootstrap'
 import { useConversations } from '../contexts/ConversationsProvider';
 
 //css
-import './Styles/OpenConversation/openconversation.css'
+// import './Styles/OpenConversation/openconversation.css'
 import SendIcon from '@material-ui/icons/Send';
 
 

@@ -3,9 +3,6 @@ const router = require("express").Router();
 const bcrypt = require("bcrypt");
 const { v4: uuidv4 } = require('uuid');
 
-router.get("/hello", async (req, res) => {
-  res.send("Hello World!aaaaaaaaaaaaaaaaaaaaa");
-});
 
 
 router.get("/getkey", async (req, res) => {

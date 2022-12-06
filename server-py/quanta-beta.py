@@ -1,35 +1,52 @@
 from flask import Flask, request
 from flask_socketio import SocketIO, emit
-from flask_cors import CORS
+import numpy as np
 import random
 import string
+import process
 
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app, cors_allowed_origins="*")
-all_users = []
+all_users = {}
 
 @socketio.on('connect')
 def test_connect():
-    all_users.append(request.args.get('id'))   
-    print(all_users)
+    all_users[request.args.get('id')] = request.sid   
 
-    
-    @socketio.on('request-key')
-    def handle_request_key(json):
-        curr_sender = all_users.index(json['sender'])
-        curr_receiver = all_users.index(json['receiver'])
-        key = ''.join(random.choice(string.ascii_uppercase + string.digits)
-                    for _ in range(6))
-        socketio.emit('key', {'key': key}, room=curr_receiver)
-        socketio.emit('key', {'key': key}, room=curr_sender)
+@socketio.on('request-key')
+def handle_request_key(json):
+    # bits = process.bit_generator()
+    # temp = ""
+    # message,encoding_bases = process.encoder(bits)
+    # temp = str(message)
+    # temp2 = np.array(temp)
+    # temp2.tobytes()
+    # print(temp2)
+    key = "lol"
+    socketio.emit('response', {"key":key}, room=all_users[json['sender']])
+    socketio.emit('response', {"key":key} ,room=all_users[json['receiver']])
+
+    # @socketio.on('decode')
+    # def handle_decode(json):
+    #     results,decoding_bases = process.measure(json['key'])
+    #     user_1_key = process.key_gen(encoding_bases,decoding_bases,bits)
+    #     user_2_key = process.key_gen(encoding_bases,decoding_bases,results)
+    #     user_1, user_2 = process.sampler(user_1_key,user_2_key)
+    #     if user_1==user_2:
+    #         socketio.emit("response",{"key":user_1_key}, room=all_users[json['sender']])
+    #         socketio.emit("response",{"key":user_2_key}, room=all_users[json['reciever']])
 
 
-# @app.route('/encrypt', methods=['GET'])
-# def message():
-    # res = ''.join(random.choices(string.ascii_uppercase + string.digits, k=64))
-#     return str(res)
+
+
+
+
+
+
+
+
 
 
 if __name__ == "__main__":

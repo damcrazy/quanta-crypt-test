@@ -117,30 +117,28 @@ def sampler(user_1_bits,user_2_bits):
     return user_1_sample,user_2_sample
 
 
-print("Key generation has been initiated....")
+# print("Key generation has been initiated....")
 
-bits = bit_generator()
-#print("user_1 bits: ",bits)
-message,encoding_bases = encoder(bits)
-results,decoding_bases = measure(message)
-user_1_key = key_gen(encoding_bases,decoding_bases,bits)
-user_2_key = key_gen(encoding_bases,decoding_bases,results)
-print('user-1-key: ',user_1_key)
-print('user-2-key: ',user_2_key)
-user_1, user_2 = sampler(user_1_key,user_2_key)
+# bits = bit_generator()
+# #print("user_1 bits: ",bits)
+# message,encoding_bases = encoder(bits)
+# results,decoding_bases = measure(message)
+# user_1_key = key_gen(encoding_bases,decoding_bases,bits)
+# user_2_key = key_gen(encoding_bases,decoding_bases,results)
+# print('user-1-key: ',user_1_key)
+# print('user-2-key: ',user_2_key)
+# user_1, user_2 = sampler(user_1_key,user_2_key)
 
-if user_1==user_2:
-    print("Key verification done")
-    print("Key can be used for encrypting and decrypting")
-    print("-----------------------------------------------")
-    print("-----------------------------------------------")
-    print("sample collected from user_1's key: ",user_1)
-    print("sample collected from user_2's key: ",user_2)
-else:
-    print("Key verification failed......")
-    print("Key not fit for encryption and decryption.......")
-#............................................................................
-
-
-
+# if user_1==user_2:
+#     print("Key verification done")
+#     print("Key can be used for encrypting and decrypting")
+#     print("-----------------------------------------------")
+#     print("-----------------------------------------------")
+#     print("sample collected from user_1's key: ",user_1)
+#     print("sample collected from user_2's key: ",user_2)
+# else:
+#     print("Key verification failed......")
+#     print("Key not fit for encryption and decryption.......")
+# ............................................................................
+   
 

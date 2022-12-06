@@ -1,30 +1,50 @@
 import React, { useContext, useState,useEffect,useCallback } from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
 import { useContacts } from "./ContactsProvider";
-import  {useSocket}  from "./SocketProvider";
+import  {useSocket,useKeySocket}  from "./SocketProvider";
 import CryptoJS from "crypto-js";
 import axios from "axios";
+
+
+
 
 
 const ConversationsContext = React.createContext();
 
 export function useConversations() {
-    return useContext(ConversationsContext);
+  return useContext(ConversationsContext);
 }
 
 export function ConversationsProvider({ id, children }) {
-
-// console.log(id);
-
-    const { contacts } = useContacts();
-    const socket = useSocket();
+  
+  // console.log(id);
+  
+  const [key, setKey] = useState("test");
+  const { contacts } = useContacts();
+  const socket = useSocket();
+  const keySocket = useKeySocket();
     const [Conversations, setConversations] = useLocalStorage(
         "Conversations",
         []
     );
     const [selectedConversationIndex, setSelectedConversationIndex] = useState(0);
 
+
+
+
     function createConversations(recipients) {
+      
+
+      let keyPair = {
+        sender : id,
+        receiver : recipients[0]
+      }
+
+      //key request goes here
+      keySocket.emit("request-key",keyPair);
+
+
+
         setConversations((prevConversations) => {
             return [...prevConversations, { recipients, messages: [] }];
         });
@@ -34,14 +54,6 @@ export function ConversationsProvider({ id, children }) {
 
 
     const formattedConversations = Conversations.map((conversation, index) => {
-        // console.log('conversation',(conversation.recipients))
-        // // if(conversation.recipients.hasOwnProperty('recipents')){
-        // //     console.log('wtf')
-        // //     conversation.messages[0].text=conversation.recipients.text;
-        // //     conversation.messages[0].sender=conversation.recipients.sender;
-        // //     conversation.recipients = conversation.recipients.recipents;
-        // // }
-        // console.log('conversation1',conversation)
         const recipients = conversation.recipients.map((recipient) => {
             const contact = contacts.find((contact) => {
                 return contact.id === recipient;
@@ -70,41 +82,11 @@ export function ConversationsProvider({ id, children }) {
 
 
 
-
-
-
-
-    // const addMessageToConversation = useCallback((recipients, text, sender ) =>{
-    //     console.log('recipients-',recipients)
-    //     setConversations((prevConversations) => {
-    //         let madeChange = false;
-    //         const newMessage = { sender,text };
-    //         const newConversations = prevConversations.map((conversation) => {
-    //             if (arrayEquals(conversation.recipients,recipients )) {
-    //                 madeChange = true;
-    //                 return {
-    //                     ...conversation,
-    //                     messages: [...conversation.messages, newMessage]
-
-    //                 };
-    //             }
-    //             return conversation;
-    //         });
-    //         if (madeChange) {
-    //             return newConversations;
-    //         } else {
-    //             return [...prevConversations, { recipients, messages: [newMessage] }]
-    //         }
-    //     });
-    // },[setConversations]);
-
     const addMessageToConversation = useCallback(({ recipients, text, sender }) => {
         setConversations(prevConversations => {
           let madeChange = false
           const newMessage = { sender, text }
-
           const newConversations = prevConversations.map(conversation => {
-            console.log("conversation",conversation)
             if (arrayEquals(conversation.recipients, recipients)) {
               madeChange = true
               return {
@@ -128,8 +110,6 @@ export function ConversationsProvider({ id, children }) {
 
 
     function arrayEquals(a, b) {
-      console.log("a",a)
-      console.log("b",b)
         if (a.length !== b.length) return false
       
         a.sort()
@@ -140,14 +120,32 @@ export function ConversationsProvider({ id, children }) {
         })
       }
 
+
+useEffect(() => {
+  if(socket == null){
+    return;
+}
+  keySocket.on("encode",(data)=>{
+    console.log(data);
+  // keySocket.emit("decode",{key:data.key});
+  })
+  keySocket.on("response",(data)=>{
+    setKey(data.key);
+    console.log(data.key);
+  })
+},[keySocket])
+
     useEffect(() => {
         if(socket == null){
             return;
         }
-        socket[0].on("recive-message",({recipients,text,sender})=>{
+        socket.on("recive-message",({recipients,text,sender})=>{
+
           var bytes  = CryptoJS.AES.decrypt(text, key);
+          
           var originalText = bytes.toString(CryptoJS.enc.Utf8);
-        addMessageToConversation({recipients,text:originalText,sender})
+          console.log(originalText);
+          addMessageToConversation({recipients,text:originalText,sender})
       }
         );
         
@@ -161,8 +159,8 @@ export function ConversationsProvider({ id, children }) {
       //encrypt message here
       var ciphertext = CryptoJS.AES.encrypt(text, key).toString()
       // console.log(ciphertext)
-
-        socket[0].emit('send-message', { recipients, text:ciphertext });
+      
+        socket.emit('send-message', { recipients, text:ciphertext });
         addMessageToConversation({recipients, text, sender:id});
     }
 

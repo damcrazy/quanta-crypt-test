@@ -10,7 +10,7 @@ import Login from './components/loginT';
 import Dashboard from './components/Dashboard';
 import { ContactsProvider } from './contexts/ContactsProvider';
 import { ConversationsProvider } from './contexts/ConversationsProvider';
-import { SocketProvider } from './contexts/SocketProvider';
+import { SocketProvider,KeySocket } from './contexts/SocketProvider';
 import Payment  from './components/Payment';
 
 const auth = "http://localhost:8800/api/users"
@@ -42,11 +42,13 @@ function App() {
     <>
     {/* {id} */}
     <SocketProvider id={id}>
+      <KeySocket id={id}>
       <ContactsProvider>
         <ConversationsProvider id={id}>
           <Dashboard id={id} setId={setId} setShowLogin={setShowLogin} />
         </ConversationsProvider>
       </ContactsProvider>
+      </KeySocket>
     </SocketProvider>
     </>
   )

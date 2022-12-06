@@ -2,10 +2,16 @@ import React,{useContext,useState,useEffect} from 'react'
 import io from 'socket.io-client'
 
 const SocketContext = React.createContext()
+const KeySocketContext = React.createContext()
 
 export function useSocket(){
     return useContext(SocketContext)
 }
+
+export function useKeySocket(){
+    return useContext(KeySocketContext)
+}
+
 
 export function SocketProvider({id,children}) {
   // console.log('id',id)
@@ -19,13 +25,13 @@ export function SocketProvider({id,children}) {
     },[]);
 
 
-
     return (
-    <SocketContext.Provider value={[socket,keySocket]} >
+    <SocketContext.Provider value={socket} >
         {children}
     </SocketContext.Provider>
   )
 }
+
 export function KeySocket({id,children}) {
   // console.log('id',id)
   const [keySocket,setKeySocket] = useState();
@@ -39,9 +45,9 @@ export function KeySocket({id,children}) {
 
 
     return (
-    <SocketContext.Provider value={[socket,keySocket]} >
+    <KeySocketContext.Provider value={keySocket} >
         {children}
-    </SocketContext.Provider>
+    </KeySocketContext.Provider>
   )
 }
 
